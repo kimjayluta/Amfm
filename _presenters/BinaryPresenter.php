@@ -1,38 +1,109 @@
 <?php
 class BinaryPresenter {
-    // HTTP Header Method: GET
-    // Used to retrive a data or a view
     public function get(){
-        View::addVar("view_title", "Binary Affiliation Program");
-        View::addVar("BODY_CLASS", "bg-light");
+    	// Do not allow those users that is not logged
+	    SessionModel::restrictNotLogged();
 
+	    // Set up the body class and the view_title
+	    View::addVar("view_title", "Binary Affiliation Program");
+	    View::addVar("BODY_CLASS", "bg-light");
+
+	    // Add the User Data as variables
 	    View::addVar("username", SessionModel::getUser());
 	    View::addVar("FULL_NAME", SessionModel::getName());
 
-        View::addCSS("/_layouts/Binary/Treant.css");
-        View::addCSS("/_layouts/Binary/collapsable.css");
+	    // Add the CSS dependencies
+	    View::addCSS("/_layouts/Binary/Treant.css");
+	    View::addCSS("/_layouts/Binary/collapsable.css");
 	    View::addCSS("http://".Route::domain()."/css/".md5("Bootstrap").".min.css");
 
-
-        View::addScript("/_layouts/Binary/jquery.min.js");
-        View::addScript("/_layouts/Binary/Treant.js");
-        View::addScript("/_layouts/Binary/jquery.easing.js");
-        View::addScript("/_layouts/Binary/collapsable.js");
-        View::addScript("/_layouts/Binary/collapsable.js");
-        View::addScript("/_layouts/Binary/raphael.js");
-        View::addScript("/_layouts/Binary/raphael.js");
-
+	    // Add the compiled JS dependencies
+	    View::addScript("http://".Route::domain()."/js/".md5("JQueryOnly").".min.js");
 	    View::addScript("http://".Route::domain()."/js/".md5("Bootstrap").".min.js");
 
-        // Use the server domain name address on the layout
-        View::addVar("DN", Route::domain());
-        View::addVar("HASH_ID", SessionModel::getHash());
+	    // Add the JS dependencies
+	    View::addScript("/_layouts/Binary/Treant.js");
+	    View::addScript("/_layouts/Binary/jquery.easing.js");
+	    View::addScript("/_layouts/Binary/raphael.js");
+
+	    // Use the server domain name address on the layout
+	    View::addVar("DN", Route::domain());
+	    View::addVar("HASH_ID", SessionModel::getHash());
+	    View::addVar("USER_ID", SessionModel::getUserID());
+
+	    // Check of already registered on the binary program
+	    if (SessionModel::getBinStatus()){
+		    View::addVar("BINARY", SessionModel::getBinStatus());
+		    return;
+	    }
+
+	    // Check if the user has a pending request to the server
+	    $_REFHASH = BinPathModel::checkOnPending();
+	    if ($_REFHASH !== false){
+		    View::addVar("REFERENCE", $_REFHASH);
+		    return;
+	    }
+
+	    // Permit only r parameters and remove the others
+	    Params::permit("r");
+
+	    // Add Variable of the provided reference, use false when not valid.
+	    if (Params::get("r")){
+		    $_REFERENCE = Params::get("r");
+		    $_REFERENCE = BinPathModel::checkReference($_REFERENCE);
+		    View::addVar("VALID_REFERENCE", $_REFERENCE);
+		    return;
+	    }
+
     }
 
-    // HTTP Header Method: POST
-    // Usually used when to insert a new data
     public function post(){
-        Route::returnCode(401);
+    	// Require the following Parameter to use the post method
+    	Params::permit("targetID", "cancelRequest", "getNodes", "getPending", "commit", "r", "parent", "user");
+
+        if (Params::get("commit") && count(Params::get("r")) && count(Params::get("parent")) && count(Params::get("user"))){
+		    $pendingStatus = BinPathModel::addNode(
+				Params::get("parent"),
+				Params::get("user"),
+				Params::get("r")
+			);
+
+			if ($pendingStatus){
+				echo 1;
+			}
+    		exit;
+	    }
+
+    	if (Params::get("getPending")){
+		    $dbData = BinPathModel::checkPendingPath();
+		    echo ($dbData);
+		    exit;
+	    }
+
+    	if (Params::get("getNodes")){
+    		$dbData = BinPathModel::selectNodes();
+    		echo ($dbData);
+    		exit;
+	    }
+
+	    if (Params::get("cancelRequest")){
+			$removedPending = BinPathModel::removePending();
+			if ($removedPending){
+				echo 1;
+			}
+		    exit;
+	    }
+
+		if (Params::get("targetID")){
+			$pendingStatus = BinPathModel::addPending(Params::get("targetID"));
+			if ($pendingStatus){
+				echo 1;
+			}
+			exit;
+		}
+
+    	// Send a server response
+    	exit;
     }
 
     // HTTP Header Method: PUT
@@ -47,4 +118,3 @@ class BinaryPresenter {
         Route::returnCode(401);
     }
 }
-    

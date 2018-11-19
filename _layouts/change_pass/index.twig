@@ -4,23 +4,32 @@
 {% include "Profile/header.twig"%}
 
 <div class="container mt-4">
-    <div class="card">
-        <div class="card-body">
-            <table>
-                <tr>
-                    <td><strong>Old Password:</strong><td>
-                    <td><input type="password" class="form-control mb-2" name="old_pass"></td>
-                </tr>
-                <tr>
-                    <td><strong>New Password:</strong><td>
-                    <td><input type="password" class="form-control mb-2" name="new_pass"></td>
-                </tr>
-                <tr>
-                    <td><strong>Confirm Password:</strong><td>
-                    <td><input type="password" class="form-control" name="cf_pass"></td>
-                </tr>
-            </table>
-            <button class="btn btn-primary mt-md-3" style="margin-left: 222px;">Save Changes</button>
-        </div>
+
+    <h2 align="center" class="text-primary mb-3">Change Account Password</h2>
+
+    <div class="card w-50 m-auto">
+        <form  method="POST" action="/account/password" class="card-body">
+	        {% if fc.title == "Request Error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{ fc.title }} </strong>
+                    <span>{{ fc.message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+	        {% elseif fc.title == "Request Success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ fc.title }} </strong>
+                    <span>{{ fc.message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+	        {% endif %}
+            <input type="password" class="form-control mb-2" name="pwd" placeholder="Enter Old Password" required>
+            <input type="password" class="form-control mb-2" name="pwd1" placeholder="Create New Password" required>
+            <input type="password" class="form-control mb-2" name="pwd2" placeholder="Re-enter new Password" required>
+            <button class="btn btn-outline-primary float-right" type="submit">Confirm Changes</button>
+        </form>
     </div>
 </div>

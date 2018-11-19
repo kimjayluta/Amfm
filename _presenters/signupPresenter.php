@@ -37,7 +37,6 @@ class signupPresenter {
         $pwd = Params::get("pwd");
         $cfpwd = Params::get("cfpwd");
 
-        var_dump(Params::getAll());
         // Check kung may laman ang gabos na data
         if(!isset($first_name, $last_name, $address, $contact_num, $usn, $pwd, $cfpwd)){
 	        self::showError(" Fill all forms of data!");

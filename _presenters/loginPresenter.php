@@ -16,7 +16,7 @@ class loginPresenter {
         View::addCSS("/_layouts/login/login.css");
         View::addCSS("http://".Route::domain()."/css/".md5("Bootstrap").".min.css");
 
-        View::addVar("fc", Plugins\FlashCard::getFlashCard()[0]);
+        View::addVar("fc", @Plugins\FlashCard::getFlashCard()[0]);
 
 	    View::addScript("/_layouts/Home/js/jquery.min.js");
 	    View::addScript("/_layouts/Home/js/bootstrap.min.js");
@@ -46,9 +46,12 @@ class loginPresenter {
         // Start Account checking...
         $account = LoginAuthModel::checkAccount($usn, $pwd);
         if ($account !== false){
-            // Save the session
+        	// Save the session
             SessionModel::setUser($usn, $account["hash_id"]);
+            SessionModel::setBinStatus($account["bin_active"]);
+            SessionModel::setUniStatus($account["uni_active"]);
             SessionModel::setID($account["id"]);
+            SessionModel::setParentID($account["uniparent"]);
 
             // Reload the page to redirect to the new page
             header("location: /");

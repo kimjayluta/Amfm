@@ -5,6 +5,149 @@
 
 <div class="container-fluid mt-3">
 
+	{% if UNI_LEVEL or LOAN.loan_type %}
+        <div class="row m-3">
+            <div class="col-4">
+                <div class="card card-body mb-2">
+                    <div>
+                        <div class="float-left" style="width: 140px; height: 140px; background: url('/img/person_icon.png') no-repeat; background-size: cover"></div>
+                        <div class="float-left mt-0 ml-2">
+                            <h5 class="m-0">{{ FULL_NAME }}</h5>
+                            <div class="mt-1">
+                                <b>Package: </b> {{ LOAN.loan_type }}
+                            </div>
+                            <div class="mt-1">
+                                <b>Level: </b>0
+                            </div>
+                            <div class="mt-1">
+                                <b>Invites: </b>0
+                            </div>
+                            <div class="mt-1">
+                                <b>Earnings: PHP </b><span>00</span><span>.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="separator">
+                    <div>
+                        <b class="float-left">Referral link</b>
+                        <a class="float-right" id="copy_link" href="javascript:void(0)">Copy Link</a>
+                    </div>
+                    <input type="text" id="hash_id" class="form-control" readonly="readonly" value="http://{{ DN }}/register?ref={{ HASH_ID }}">
+                </div>
+
+                <div class="card card-body mb-2">
+                    <table>
+                        <tr>
+                            <th><b>Package type</b></th>
+                            <th><b>Number</b></th>
+                        </tr>
+                        <tr>
+                            <td style="width: 45%;"><b>VIP: </b></td>
+                            <td class="text-center" style="width: 15%;"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td><b>Diamond:</b></td>
+                            <td class="text-center"><span>51</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td><b>Gold:</b></td>
+                            <td class="text-center" ><span>51</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td><b>Silver:</b></td>
+                            <td class="text-center" ><span>51</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td><b>Bronze:</b></td>
+                            <td class="text-center"><span>51</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card card-body">
+                    <table>
+                        <tr>
+                            <th class="text-center"><b>Level</b></th>
+                            <th class="text-center"><b>Persons</b></th>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>1</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>2</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>3</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>4</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>5</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>6</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>7</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>8</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>9</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><b>10</b></td>
+                            <td class="text-center"><span>55</span></td>
+                            <td class="text-center"><a href="#">View Persons</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-8 p-0">
+                <div class="chart" id="collapsable-example"></div>
+            </div>
+        </div>
+	{% elseif LOAN_REQUEST != false %}
+    <div class="container card text-center">
+        <div class="card-body">
+            <h4 align="center">Pending Loan</h4>
+            <hr class="separator">
+            <div>You have a successfully requested a loan and is currently pending. </div>
+            <div>Please go to our office to continue this transaction.</div>
+            <div>
+                <b>Loan Package: </b><span>{{ LOAN_REQUEST }}</span>
+            </div>
+            <a href="/profile" class="btn btn-outline-primary font-weight-bold mt-2">
+                <span>&laquo; Go back to homepage</span>
+            </a>
+        </div>
+    </div>
+    {% else %}
     <div class="container card text-center">
         <div class="card-body">
             <h4 align="center" class="text-success">Apply for Uni-level Program</h4>
@@ -15,159 +158,110 @@
             <a href="/profile" class="btn btn-success mt-2">Apply Now &raquo;</a>
         </div>
     </div>
-
-
-    <div class="row m-3">
-        <div class="col-4">
-            <div class="card card-body mb-2">
-                <div>
-                    <div class="bg-danger float-left" style="width: 140px; height: 140px">[PHOTO BETA]</div>
-                    <div class="float-left mt-0 ml-2">
-                        <h5 class="m-0">{{ FULL_NAME }}</h5>
-                        <div class="mt-1">
-                            <b>Package: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Level: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Invites: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Earnings: PHP </b><span>NAN</span><span>.00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-body mb-2">
-                <table>
-                    <tr>
-                        <th><b>Package type</b></th>
-                        <th><b>Number</b></th>
-                    </tr>
-                    <tr>
-                        <td style="width: 45%;"><b>VIP: </b></td>
-                        <td class="text-center" style="width: 15%;"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td><b>Diamond:</b></td>
-                        <td class="text-center"><span>51</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td><b>Gold:</b></td>
-                        <td class="text-center" ><span>51</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td><b>Silver:</b></td>
-                        <td class="text-center" ><span>51</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td><b>Bronze:</b></td>
-                        <td class="text-center"><span>51</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="card card-body">
-                <table>
-                    <tr>
-                        <th class="text-center"><b>Level</b></th>
-                        <th class="text-center"><b>Persons</b></th>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>1</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>2</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>3</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>4</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>5</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>6</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>7</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>8</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>9</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center"><b>10</b></td>
-                        <td class="text-center"><span>55</span></td>
-                        <td class="text-center"><a href="#">View Persons</a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="col-8 p-0">
-           <div class="chart" id="collapsable-example"></div>
-        </div>
-    </div>
+    {% endif %}
 </div>
-<!-- Modal -->
-<div class="modal fade" id="addPerson" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    var tree = new Treant( chart_config, null, $);
 
-    $(document).ready(function () {
-        $(".add-person").on("click", function (e) {
-            alert("asd");
-        });
-        $("#malory").data("treenode").collapse();
-        tree.tree.addNode($("#malory").data("treenode"), acctList.lana);
-        tree.tree.addNode($("#lana").data("treenode"), acctList.figgs);
-        $("#malory").data("treenode").expand();
-    });
-</script>
+{% if UNI_LEVEL or LOAN.loan_type  %}
+    <script type="text/javascript">
+		$(document).ready(function () {
+			{# It is a fucking error to display when a fucking ajax request fails or responses an unexpected fucking response. #}
+			var errorMethod = function () {
+				{# Show the Server Error #}
+				alert("Server Error: An internet connection distortion occur while trying to send your request. Please try again later");
+			}
+
+			var config = {
+				container: "#collapsable-example",
+				node: { collapsable: true },
+				animation: {
+					nodeSpeed: 100,
+					connectorsSpeed: 100
+				}
+			};
+
+			{# Initialize the Treant JS #}
+			var tree = new Treant( [config, {
+				HTMLid: "a_{{ USER_ID }}",
+				image: "img/person_icon.png"
+			}], null, $);
+
+			var addNode = function(parentNode, dataArr){
+				return tree.tree.addNode(parentNode.data("treenode"), dataArr);
+			}
+
+			var collapseNode = function (parentNode) {
+				return  parentNode.data("treenode").collapse();
+			}
+
+			$("#collapsable-example").on("click", ".add-person",function (e) {
+				parent = ($(this).attr("data-parent"));
+				r = ($(this).attr("data-r")) === undefined ? 0 : 1
+			});
+
+			// Collapse the parentNode
+			collapseNode($("#a_{{ USER_ID }}"));
+
+			{# Ajax Request to the binary request #}
+			var JQXHR = $.ajax({
+				type: "POST",
+				url: "unilevel",
+				data: {"getNodes": 1},
+				beforeSend: function () {
+					{# On the future use this to display updating data #}
+				}
+			})
+
+			{# Get the server response when the request is successful #}
+			JQXHR.done(function(data){
+				if (data.length > 0){
+					data = JSON.parse(data);
+
+					{# Generate Node #}
+					for (var i=0; i < data.length; i++){
+						addNode($("#"+data[i]["parentId"]), data[i]);
+
+						{# Generate Tooltip #}
+						$('[data-toggle="tooltip"]').tooltip({
+							html:true,
+							title: $("#"+data[i]["HTMLid"]).attr("data-title")
+						});
+					}
+					return;
+				}
+			});
+
+			JQXHR.fail(errorMethod);
+		});
+    </script>
+
+	{# Coply Referal Link Algorithm #}
+    <script type="text/javascript">
+		function copyToClipboard(text) {
+			var textArea = document.createElement( "textarea" );
+			textArea.value = text;
+			document.body.appendChild( textArea );
+
+			textArea.select();
+
+			try {
+				var successful = document.execCommand( 'copy' );
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Copying text command was ' + msg);
+			} catch (err) {
+				console.log('Oops, unable to copy');
+			}
+
+			document.body.removeChild( textArea );
+		}
+
+		// Copy Link
+		$("#copy_link").on("click", function (e) {
+			var hash_id = $("#hash_id");
+			var clipboardText = $( '#hash_id' ).val();
+			copyToClipboard( clipboardText );
+			alert( "Copied to Clipboard" );
+
+			hash_id.select();
+		});
+    </script>
+{% endif %}

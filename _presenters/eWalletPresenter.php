@@ -3,6 +3,8 @@ class eWalletPresenter {
     // HTTP Header Method: GET
     // Used to retrive a data or a view
     public function get(){
+	    SessionModel::restrictNotLogged();
+
         View::addVar("view_title", "E-Wallet System");
         View::addVar("BODY_CLASS", "bg-light");
         View::addVar("username", SessionModel::getUser());

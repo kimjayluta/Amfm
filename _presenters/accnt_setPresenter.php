@@ -3,6 +3,8 @@ class accnt_setPresenter {
     // HTTP Header Method: GET
     // Used to retrive a data or a view
     public function get(){
+    	SessionModel::restrictNotLogged();
+
         View::addVar("view_title", "Account Settings");
         View::addVar("BODY_CLASS", "bg-light");
         View::addVar("username", SessionModel::getUser());
@@ -16,12 +18,44 @@ class accnt_setPresenter {
 
         // Include the bootstrap JS
         View::addScript("http://".Route::domain()."/js/".md5("Bootstrap").".min.js");
+
+        View::addVar("INFO", AcctManagementModel::getInfo());
     }
 
-    // HTTP Header Method: POST
-    // Usually used when to insert a new data
     public function post(){
-        Route::returnCode(401);
+    	Params::permit(
+    		// Basic Info
+		    "fn", "ln", "cn", "ad", "bdate",
+		    // Primary Info
+		    "username", "email"
+	    );
+
+    	if (Params::get("fn") != false && Params::get("ln") !=false && Params::get("cn") != false &&
+		    Params::get("bdate") != false && Params::get("ad") != false){
+		    AcctManagementModel::changeBasicInfo(
+			    Params::get("fn"),
+			    Params::get("ln"),
+			    Params::get("cn"),
+			    Params::get("bdate"),
+			    Params::get("ad")
+		    );
+
+		    header("location: /account/settings");
+		    exit;
+	    }
+
+
+
+	    if (Params::get("username") != false && Params::get("email") != false){
+    		AcctManagementModel::changePrimaryInfo(
+    			Params::get("username"),
+			    Params::get("email")
+		    );
+
+    		header("location: /account/settings");
+    		exit;
+	    }
+
     }
 
     // HTTP Header Method: PUT

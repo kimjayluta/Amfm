@@ -36,6 +36,17 @@ class SessionModel {
         $_SESSION["username"] = $username;
         $_SESSION["hash_id"] = $hash_id;
     }
+
+    public static function setBinStatus(bool $status){
+    	self::start();
+		$_SESSION["bin_status"] = $status;
+    }
+
+    public static function setUniStatus(bool $status){
+		self::start();
+		$_SESSION["uni_status"] = $status;
+    }
+
     // Log the users id
     public static function setID(String $userID){
         self::start();
@@ -47,10 +58,31 @@ class SessionModel {
         self::start();
         $_SESSION["name"] = $fn. " ".$ln;
     }
+
+    // Log the user's invitor
+    public static function setParentID(int $parentID){
+        self::start();
+        $_SESSION["uniparent"] = $parentID;
+    }
+	/* ======= END SETTERS ======= */
+
+
+    /* ======= START GETTERS ======= */
+
     // Get Logged user
     public static function getUser(){
         self::start();
         return $_SESSION["username"];
+    }
+	// Get Logged Bin Status
+    public static function getBinStatus(){
+    	self::start();
+    	return $_SESSION["bin_status"];
+    }
+    // Get Logged Uni Status
+    public static function getUniStatus(){
+    	self::start();
+    	return $_SESSION["uni_status"];
     }
     // Get Logged User ID
     public static function getUserID(){
@@ -61,6 +93,11 @@ class SessionModel {
     public static function getName(){
         self::start();
         return ucwords($_SESSION["name"]);
+    }
+    // Get Logged Users Invitor
+    public static function getParentID(){
+        self::start();
+        return ucwords($_SESSION["uniparent"]);
     }
     // Get Logged User HASHID
     public static function getHash(){

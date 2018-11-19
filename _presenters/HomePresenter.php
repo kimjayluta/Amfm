@@ -6,7 +6,6 @@ class HomePresenter {
     	SessionModel::restrictLogged();
 
         View::addVar("view_title", "Binary Level");
-        View::addCSS("http://onushorit.com/EasyLoan/img/favicon_home.ico");
         View::addCSS("/_layouts/Home/css/bootstrap.min.css");
         View::addCSS("/_layouts/Home/css/main.css");
         View::addCSS("/_layouts/Home/css/font-awesome.min.css");

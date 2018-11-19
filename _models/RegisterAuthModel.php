@@ -2,8 +2,8 @@
 class RegisterAuthModel {
 
     public static function register($fn, $ln, $bd, $ad, $ea, $cn, $un, $pw){
-        $database = DatabaseModel::db();
-        $connection = DatabaseModel::getConnection();
+        $database = DatabaseModel::initConnections();
+        $connection = DatabaseModel::getMainConnection();
 
         $database->mysqli_begin_transaction($connection);
 

@@ -1,121 +1,445 @@
 
 {% set page = "binary" %}
 {% include "Profile/header.twig" %}
-
 <div class="container-fluid mt-3">
-    <div class="container card text-center mb-3">
-        <div class="card-body">
-            <h4 align="center" class="text-warning">Apply for Binary Program</h4>
-            <hr class="separator">
-            <span>Sorry, but only those who have a valid sponsor reference link is able to apply for this kind of affiliation program. </span>
-            <div>For more information try to visit or contact us.</div>
-        </div>
-    </div>
-    <div class="container card text-center">
-        <div class="card-body">
-            <h4 align="center" class="text-warning">Apply for Binary Program</h4>
-            <hr class="separator">
-            <span>This affiliation program will require you to pay <span style="text-decoration: underline"><b>PHP</b> 10,000.00</span> as the registration fee. </span>
-            <span>This special affiliation program is for those who wants to earn extra income as their compensation long-termed.</span>
-            <div>For more information try to visit or contact us.</div>
-            <button class="btn btn-warning mt-2">Proceed and Apply Now &raquo;</button>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-4">
-            <div class="card card-body">
-                <div>
-                    <div class="bg-danger float-left" style="width: 140px; height: 140px">[PHOTO BETA]</div>
-                    <div class="float-left mt-0 ml-2">
-                        <h5 class="m-0">{{ FULL_NAME }}</h5>
-                        <div class="mt-1">
-                            <b>Level: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Direct Referrals: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Indirect Referrals: </b>NAN
-                        </div>
-                        <div class="mt-1">
-                            <b>Earnings: PHP </b><span>NAN</span><span>.00</span>
-                        </div>
-                    </div>
-                </div>
-                <hr class="separator">
-                <div>
-                    <b class="float-left">Referral link</b>
-                    <a class="float-right" id="copy_link" href="javascript:void(0)">Copy Link</a>
-                </div>
-                <input type="text" id="hash_id" class="form-control" readonly="readonly" value="http://{{ DN }}/register?id={{ HASH_ID }}">
-            </div>
-        </div>
-        <div class="col-8">
-            <div class="chart" id="collapsable-example"></div>
-        </div>
-    </div>
+
+
+	{%  if BINARY %}
+		<div class="row mt-3">
+			<div class="col-4">
+				<div class="card card-body">
+					<div>
+						<div class="float-left" style="width: 140px; height: 140px; background: url('/img/person_icon.png') no-repeat; background-size: cover"></div>
+						<div class="float-left mt-0 ml-2">
+							<h5 class="m-0">{{ FULL_NAME }}</h5>
+							<div class="mt-1">
+								<b>Level: </b>NAN
+							</div>
+							<div class="mt-1">
+								<b>Direct Referrals: </b>NAN
+							</div>
+							<div class="mt-1">
+								<b>Indirect Referrals: </b>NAN
+							</div>
+							<div class="mt-1">
+								<b>Earnings: PHP </b><span>NAN</span><span>.00</span>
+							</div>
+						</div>
+					</div>
+					<hr class="separator">
+					<div>
+						<b class="float-left">Referral link</b>
+						<a class="float-right" id="copy_link" href="javascript:void(0)">Copy Link</a>
+					</div>
+					<input type="text" id="hash_id" class="form-control" readonly="readonly" value="http://{{ DN }}/binary?ref={{ HASH_ID }}">
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="chart" id="collapsable-example"></div>
+			</div>
+		</div>
+
+		{# Add the pending person #}
+		<div class="modal fade" id="addPerson" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Select Not plotted Invites</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Loading... Please wait...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#confirmAction">
+							<span>Save changes</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# Confirmation Modal #}
+		<div class="modal fade" id="confirmAction" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirm action</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span>Plotting your invited persons in the binary tree is permanent and cannot be changed. </span>
+						<span>Do you want to proceed?</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addPerson" data-dismiss="modal">
+							<span>Cancel</span>
+						</button>
+						<button type="button" class="btn btn-primary" id="commitTreeChange">Proceed</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	{% elseif REFERENCE %}
+		<div class="container card text-center mb-3">
+			<div class="card-body">
+				<h4 align="center" class="text-success">Your application request has been successfully sent.</h4>
+				<hr class="separator">
+				<span>YOu have successfully applied to the company's binary affiliation program.</span>
+				<span>To activate your account, please go yo our office and prepare </span>
+				<span style="text-decoration: underline"><b>PHP</b> 10,000.00</span> as the registration fee. </span>
+				<span>You can also cancel this request if you think that you used a different reference link.</span>
+				<div><b>Reference Used:</b> /{{ REFERENCE }}</div>
+				<button class="btn btn-outline-danger mt-2" data-toggle="modal" data-target="#cancelRequest">
+					<span id="cancelText">&laquo; Cancel Current Application Request</span>
+				</button>
+			</div>
+		</div>
+
+
+		{# Cancel Current Application Request Confirmation #}
+		<div class="modal fade" id="cancelRequest" tabindex="-1" role="dialog"  aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header bg-danger text-white">
+						<h5 class="modal-title" >Cancel Binary Application</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Are you sure to cancel this current application?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-danger" id="cancel" data-dismiss="modal">Cancel Request</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% elseif VALID_REFERENCE %}
+		<div class="container card text-center">
+			<div class="card-body">
+				<h4 align="center" class="text-warning">Apply for Binary Program</h4>
+				<hr class="separator">
+				<span>This affiliation program will require you to pay
+			    <span style="text-decoration: underline"><b>PHP</b> 10,000.00</span> as the registration fee. </span>
+				<span>This special affiliation program is for those who wants to earn extra income as their compensation long-termed.</span>
+				<div>For more information try to visit or contact us.</div>
+				<button class="btn btn-warning mt-2" data-target="{{ VALID_REFERENCE }}" id="proceed">Proceed and Apply Now &raquo;</button>
+			</div>
+		</div>
+	{% else %}
+		<div class="container card text-center mb-3">
+			<div class="card-body">
+				<h4 align="center" class="text-warning">Apply for Binary Program</h4>
+				<hr class="separator">
+				<span>Sorry, but only those who have a valid sponsor reference link is able to apply for this kind of affiliation program. </span>
+				<div>For more information try to visit or contact us.</div>
+			</div>
+		</div>
+	{% endif %}
 </div>
-<!-- Modal -->
-<div class="modal fade" id="addPerson" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    var tree = new Treant( chart_config, null, $);
-    
-    $(document).ready(function () {
-        $(".add-person").on("click", function (e) {
-            alert("asd");
-        });
 
+{# When the account is activated in binary program #}
+{%  if BINARY %}
+	<script type="text/javascript">
+		var user_id, parent, r;
 
-        $("#malory").data("treenode").collapse();
-        tree.tree.addNode($("#malory").data("treenode"), acctList.lana);
-        tree.tree.addNode($("#lana").data("treenode"), acctList.figgs);
-        $("#malory").data("treenode").expand();
+		{# It is a fucking error to display when a fucking ajax request fails or responses an unexpected fucking response. #}
+		var errorMethod = function () {
+			{# Show the Server Error #}
+			alert("Server Error: An internet connection distortion occur while trying to send your request. Please try again later");
+		}
 
+		{# Check the fucking selected input radio before displaying the confirmation #}
+		$('#confirmAction').on('shown.bs.modal', function () {
+			user_id = $("#addPerson").find("input:checked:eq(0)").val();
 
-	    function copyToClipboard(text) {
+			if (user_id !== undefined && user_id !== null){
+				return;
+			}
 
-		    var textArea = document.createElement( "textarea" );
-		    textArea.value = text;
-		    document.body.appendChild( textArea );
+			if (parent === undefined || parent === null || r === undefined || r === null){
+				alert("An error occurs. Please contact Administrator. Error Code: PR01");
+				return;
+			}
 
-		    textArea.select();
+			{# Do the following when the program passes throughout the constraints #}
+			alert("Opps. Please select a user before proceeding. Thank you.");
+			$("#confirmAction").modal("hide");
+			$("#addPerson").modal("show");
 
-		    try {
-			    var successful = document.execCommand( 'copy' );
-			    var msg = successful ? 'successful' : 'unsuccessful';
-			    console.log('Copying text command was ' + msg);
-		    } catch (err) {
-			    console.log('Oops, unable to copy');
-		    }
+		});
 
-		    document.body.removeChild( textArea );
-	    }
-        // Copy Link
-        $("#copy_link").on("click", function (e) {
-        	var hash_id = $("#hash_id");
-	        var clipboardText = $( '#hash_id' ).val();
-	        copyToClipboard( clipboardText );
-	        alert( "Copied to Clipboard" );
+		{# The "Proceed" button on the confirmation modal, for fucking verifying your damn process #}
+		$("#commitTreeChange").on("click", function () {
+			{# Do a fucking AJAX #}
+			{# Ajax Request to the binary request #}
+			var JQXHR = $.ajax({
+				type: "POST",
+				url: "binary",
+				data: {
+					"commit": 1,
+					"r": r,
+					"parent": parent,
+					"user": user_id
+				},
+				beforeSend: function () { }
+			})
 
-	        hash_id.select();
-        });
-    });
-</script>
+			{# Get the server response when the request is successful #}
+			JQXHR.done(function(data){
+				if (data == 1){
+					{# Refresh the fucking page then we are fucking done with that #}
+					location.href = "binary";
+					return;
+				}
+
+				{# Show server error message #}
+				errorMethod();
+			});
+
+			JQXHR.fail(errorMethod);
+		});
+	</script>
+	{# Modal Handling #}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var modalBody = $("#addPerson").find(".modal-body");
+
+			$('#addPerson').on('shown.bs.modal', function () {
+				{# When the add Person modal is shown  send Ajax request to List all of the avaiable Users #}
+				{# Ajax Request to the binary request #}
+				var JQXHR = $.ajax({
+					type: "POST",
+					url: "binary",
+					data: {"getPending": 1},
+					beforeSend: function () {
+						modalBody.html("Loading... Please wait...");
+					}
+				})
+
+				{# Get the server response when the request is successful #}
+				JQXHR.done(function(data){
+					if (data.length > 0){
+						data = JSON.parse(data);
+						{# Remove the modalBody Data #}
+						modalBody.html("");
+
+						{# Loop the data and put it on the list #}
+						for (var i=0; i < data.length; i++){
+							modalBody.append(
+								$("<input/>", {
+									"type": "radio", "name": "invitee", "value": data[i].invitee_id, "id":"a_"+data[i].invitee_id
+								}).css("display", "none")
+							).append(
+								$("<label/>", {"class": "form-control", "for": "a_"+data[i].invitee_id}).text(data[i].username)
+							)
+						}
+						return;
+					}else{
+						{# Remove the modalBody Data #}
+						modalBody.html("Sorry, no pending invites found.");
+					}
+				});
+				JQXHR.fail(errorMethod);
+			});
+
+			{# When the modal is being hidden bring back the message to loading... please wait... #}
+			$('#addPerson').on('shown.bs.hidden', function () {
+				modalBody.html("Loading... Please wait...");
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var config = {
+				container: "#collapsable-example",
+				node: { collapsable: true },
+				animation: {
+					nodeSpeed: 100,
+					connectorsSpeed: 100
+				}
+			};
+
+			{# Initialize the Treant JS #}
+			var tree = new Treant( [config, {
+				HTMLid: "a_{{ USER_ID }}",
+				image: "img/person_icon.png"
+			}], null, $);
+
+			var addNode = function(parentNode, dataArr){
+				return tree.tree.addNode(parentNode.data("treenode"), dataArr);
+			}
+
+			var collapseNode = function (parentNode) {
+				return  parentNode.data("treenode").collapse();
+			}
+
+			$("#collapsable-example").on("click", ".add-person",function (e) {
+				parent = ($(this).attr("data-parent"));
+				r = ($(this).attr("data-r")) === undefined ? 0 : 1
+			});
+
+			// Collapse the parentNode
+			collapseNode($("#a_{{ USER_ID }}"));
+
+			{# Ajax Request to the binary request #}
+			var JQXHR = $.ajax({
+				type: "POST",
+				url: "binary",
+				data: {"getNodes": 1},
+				beforeSend: function () {
+					{# On the future use this to display updating data #}
+				}
+			})
+
+			{# Get the server response when the request is successful #}
+			JQXHR.done(function(data){
+				if (data.length > 0){
+					data = JSON.parse(data);
+
+					{# Generate Node #}
+					for (var i=0; i < data.length; i++){
+						addNode($("#"+data[i]["parentId"]), data[i]);
+
+						{# Generate Tooltip #}
+						$('[data-toggle="tooltip"]').tooltip({
+							html:true,
+							title: $("#"+data[i]["HTMLid"]).attr("data-title")
+						});
+					}
+					return;
+				}
+			});
+
+			JQXHR.fail(errorMethod);
+		});
+	</script>
+
+	{# Coply Referal Link Algorithm #}
+	<script type="text/javascript">
+		function copyToClipboard(text) {
+			var textArea = document.createElement( "textarea" );
+			textArea.value = text;
+			document.body.appendChild( textArea );
+
+			textArea.select();
+
+			try {
+				var successful = document.execCommand( 'copy' );
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Copying text command was ' + msg);
+			} catch (err) {
+				console.log('Oops, unable to copy');
+			}
+
+			document.body.removeChild( textArea );
+		}
+
+		// Copy Link
+		$("#copy_link").on("click", function (e) {
+			var hash_id = $("#hash_id");
+			var clipboardText = $( '#hash_id' ).val();
+			copyToClipboard( clipboardText );
+			alert( "Copied to Clipboard" );
+
+			hash_id.select();
+		});
+	</script>
+
+{# When a reference is already used in an account #}
+{% elseif REFERENCE %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#cancel").on("click", function () {
+				var cancelButtonText = $("#cancelText"),                     {# The current Element #}
+					origBtnText = cancelButtonText.text(),          {# save the original button text #}
+					errorMethod = function () {         {# Use this when an error has occured #}
+						{# Show the Server Error #}
+						alert("Server Error: An internet connection distortion occur while trying to send your request. Please try again later");
+
+						{# Bring back the original text and remove the disable attribute #}
+						cancelButtonText.text(origBtnText);
+						cancelButtonText.parent().removeAttr("disabled");
+					};
+
+				{# Ajax Request to the binary request #}
+				var JQXHR = $.ajax({
+					type: "POST",
+					url: "binary",
+					data: {"cancelRequest": 1},
+					beforeSend: function () {
+						{# Change the button text and disable it before sending the server request #}
+						cancelButtonText.text("Sending Request...");
+						cancelButtonText.parent().attr("disabled", "disabled");
+					}
+				})
+
+				{# Get the server response when the request is successful #}
+				JQXHR.done(function(data){
+					if (data == "1"){
+						location.href = "binary";
+						return;
+					}
+					{# Show server error message #}
+					errorMethod();
+				});
+
+				JQXHR.fail(errorMethod);
+			});
+		});
+	</script>
+{# When a valid reference is provided #}
+{% elseif VALID_REFERENCE %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#proceed").on("click", function () {
+				var self = $(this),                     {# The current Element #}
+					parentID = self.data("target"),     {# the id of the person invites you #}
+					origBtnText = self.text(),          {# save the original button text #}
+					errorMethod = function () {         {# Use this when an error has occured #}
+						{# Show the Server Error #}
+						alert("Server Error: An internet connection distortion occur while trying to send your request. Please try again later");
+
+						{# Bring back the original text and remove the disable attribute #}
+						self.text(origBtnText);
+						self.removeAttr("disabled");
+					};
+
+				{# Ajax Request to the binary request #}
+				var JQXHR = $.ajax({
+					type: "POST",
+					url: "binary",
+					data: {"targetID": parentID},
+					beforeSend: function () {
+						{# Change the button text and disable it before sending the server request #}
+						self.text("Sending Request...");
+						self.attr("disabled", "disabled");
+					}
+				})
+
+				{# Get the server response when the request is successful #}
+				JQXHR.done(function(data){
+					if (data == "1"){
+						location.href = "binary";
+						return;
+					}
+					{# Show server error message #}
+					errorMethod();
+				});
+
+				JQXHR.fail(errorMethod);
+			});
+		});
+	</script>
+{% endif %}
+

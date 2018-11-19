@@ -4,26 +4,92 @@
 
 <div class="container mt-4">
 	<div class="clearfix">
-		<div class="float-left bg-danger" style="display: inline-block;height: 150px; width: 150px;">[PHOTO] BETA</div>
+		<div class="float-left" style="display: inline-block;height: 150px; width: 150px; background: url('/img/person_icon.png') no-repeat; background-size: cover"></div>
 		<div class="float-left ml-3 mt-0">
 			<h3 >{{ FULL_NAME }}</h3>
 			<div class="mt-1">
-				<strong>Current Loan Package: </strong><span> Not yet registered</span>
+				<strong>Current Loan Package: </strong>
+				{% if UNI_LEVEL or LOAN.loan_type %}
+					<span>{{ LOAN.loan_type }}</span>
+				{% else %}
+					{% if LOAN_REQUEST == false %}
+						<span>Not yet registered</span>
+					{% else %}
+						<span>Pending {{ LOAN_REQUEST }}</span>
+					{% endif %}
+				{% endif %}
 			</div>
 			<div class="mt-1">
-				<strong>Remaining Loan Balance: </strong><span> Not available</span>
+				<strong>Remaining Loan Balance: </strong>
+				{% if UNI_LEVEL or LOAN.loan_balance %}
+					<span>{{ LOAN.loan_balance|number_format(2) }}</span>
+				{% else %}
+					<span> Not available</span>
+				{% endif %}
 			</div>
 			<div class="mt-1">
-				<strong>Maturity Date: </strong><span> Not available</span>
+				<strong>Maturity Date: </strong>
+				{% if UNI_LEVEL or LOAN.maturity_date %}
+					<span>{{ LOAN.maturity_date }}</span>
+				{% else %}
+					<span> Not available</span>
+				{% endif %}
 			</div>
 			<div class="mt-1">
-				<a href="#">Edit Profile Information</a>
+				<a href="/account/settings">Edit Profile Information</a>
 			</div>
 		</div>
 	</div>
 
-	<h2 align="center">Select Loan Package</h2>
+	{% if UNI_LEVEL or LOAN.loan_type %}
+		<div class="card mt-5">
+			<div class="card-body text-center">
+				<h3 align="center" class="text-success font-weight-bold">Unilevel Program Member</h3>
+				<hr class="separator">
+				<div>You have a successfully loan and entitled with our unilevel affiliation program. </div>
+				<a href="/unilevel" class="btn btn-outline-success font-weight-bold mt-2">
+					<span>View Unilevel Program &raquo;</span>
+				</a>
+			</div>
+		</div>
+	{% elseif LOAN_REQUEST != false %}
+	<div class="card mt-5">
+		<div class="card-body text-center">
+			<h3 align="center">Pending Loan</h3>
+			<hr class="separator">
+			<div>You have a successfully requested a loan and is currently pending. </div>
+			<div>Please go to our office to continue this transaction.</div>
+			<div>
+				<b>Loan Package: </b><span>{{ LOAN_REQUEST }}</span>
+			</div>
+			<button class="btn btn-outline-warning font-weight-bold mt-2" data-toggle="modal" data-target="#cancelRequest">
+				<span>&laquo; Cancel Current Loan Request</span>
+			</button>
+		</div>
+	</div>
 
+	{# Cancel Current Application Request Confirmation #}
+	<div class="modal fade" id="cancelRequest" tabindex="-1" role="dialog"  aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-danger text-white">
+					<h5 class="modal-title" >Cancel Binary Application</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Are you sure to cancel this current application?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" id="cancel" data-dismiss="modal">Cancel Request</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% else %}
+	<h2 align="center">Select Loan Package</h2>
 	<hr class="separator">
 	<div class="row">
 		<div class="col-6 mb-3">
@@ -51,7 +117,7 @@
 						The company will entitled you a membership to the uni-level affiliation program valid  for 12 Months (renewable).
 					</div>
 					<div>
-						<button class="btn btn-outline-primary float-right">Apply Now &raquo;</button>
+						<button class="btn btn-outline-primary bronze float-right">Apply Now &raquo;</button>
 					</div>
 				</div>
 			</div>
@@ -81,7 +147,7 @@
 						The company will entitled you a membership to the uni-level affiliation program valid  for 12 Months (renewable).
 					</div>
 					<div>
-						<button class="btn btn-outline-primary float-right">Apply Now &raquo;</button>
+						<button class="btn btn-outline-primary silver float-right">Apply Now &raquo;</button>
 					</div>
 				</div>
 			</div>
@@ -111,7 +177,7 @@
 						The company will entitled you a membership to the uni-level affiliation program valid  for 12 Months (renewable).
 					</div>
 					<div>
-						<button class="btn btn-outline-primary float-right">Apply Now &raquo;</button>
+						<button class="btn btn-outline-primary gold float-right">Apply Now &raquo;</button>
 					</div>
 				</div>
 			</div>
@@ -142,7 +208,7 @@
 						The company will entitled you a membership to the uni-level affiliation program valid  for 12 Months (renewable).
 					</div>
 					<div>
-						<button class="btn btn-outline-primary float-right">Apply Now &raquo;</button>
+						<button class="btn btn-outline-primary diamond float-right">Apply Now &raquo;</button>
 					</div>
 				</div>
 			</div>
@@ -171,10 +237,33 @@
 						The company will entitled you a membership to the uni-level affiliation program valid  for 12 Months (renewable).
 					</div>
 					<div>
-						<button class="btn btn-outline-primary float-right">Apply Now &raquo;</button>
+						<button class="btn btn-outline-primary vip float-right">Apply Now &raquo;</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	{% endif %}
 </div>
+
+
+{% if LOAN_REQUEST != false %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#cancel").on("click", function () { location.href = "/profile?cr=_"; })
+		});
+	</script>
+{% else %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			{# Redirect to act like an ajax #}
+			var sendRequest = function (type) { location.href = "/profile?rl="+type; };
+			{# EventListener List #}
+			$("button.bronze").on("click", function () { sendRequest("b"); });
+			$("button.silver").on("click", function () { sendRequest("s"); });
+			$("button.gold").on("click", function () { sendRequest("g"); });
+			$("button.diamond").on("click", function () { sendRequest("d"); });
+			$("button.vip").on("click", function () { sendRequest("v"); });
+		});
+	</script>
+{% endif %}

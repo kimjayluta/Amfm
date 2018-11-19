@@ -1,43 +1,63 @@
-{% set page = "profile" %}
 {% include "Profile/header.twig" %}
 
 <div class="container mt-4">
     <div class="clearfix">
-        <div class="float-left bg-danger" style="display: inline-block;height: 150px; width: 150px;">[PHOTO] BETA</div>
-        <div class="float-left ml-3 mt-0">
+        <div class="float-left" style="display: inline-block;height: 150px; width: 150px; background: url('/img/person_icon.png') no-repeat; background-size: cover"></div>
+        <div class="float-left ml-3 mt-4">
             <h3 >{{ FULL_NAME }}</h3>
             <div class="mt-1">
-                <strong>Username: </strong><span></span>
+                <strong>Username: </strong>{{ username }}<span></span>
             </div>
             <div class="mt-1">
-                <strong>Password: </strong><span>ENCRYPTED</span>
-            </div>
-            <div class="mt-1">
-                <a href="#" data-target="#editbasicInfo" data-toggle="modal">Edit basic info</a>
+                <strong>Password: </strong>
+                {#<span style="font-style: italic">ENCRYPTED </span>#}
+                <a href="/account/password">Encrypted, click to change</a>
             </div>
         </div>
     </div>
+
+    <h3 class="mt-4 text-secondary mr-2" align="right">Basic Information</h3>
+    <hr class="separator" style="margin-top: -20px">
     <div class="card mt-2">
         <div class="card-body" >
+            <a href="#"  data-target="#editbasicInfo" data-toggle="modal" class="float-right">Edit basic information</a>
+            <table id="basicInfo">
+                <tr>
+                    <td  style="width: 165px" class="font-weight-bold">First Name:</td>
+                    <td>{{ INFO.fn }}</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Last Name:</td>
+                    <td>{{ INFO.ln }}</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Contact Number:</td>
+                    <td>{{ INFO.cn }}</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Address:</td>
+                    <td>{{ INFO.ad }}</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Birthday:</td>
+                    <td>{{ INFO.bdate }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <h3 class="mt-4 text-secondary mr-2" align="right">Primary Information</h3>
+    <hr class="separator" style="margin-top: -20px">
+    <div class="card mt-2">
+        <div class="card-body" >
+            <a href="#" data-target="#editPriInfo" data-toggle="modal" class="float-right">Edit primary information</a>
             <table>
                 <tr>
-                    <td  style="width: 165px"><strong>Address: </strong></td>
-                    <td><span> calauag naga city</span></td>
+                    <td  style="width: 165px" class="font-weight-bold">Username: </td>
+                    <td>{{ INFO.username }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Email: </strong></td>
-                    <td><span> calauag@nagacity.com</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Contact Number: </strong></td>
-                    <td><span>0983713891</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Birthday: </strong></td>
-                    <td><span>07.21.1998</span></td>
-                </tr>
-                <tr>
-                    <a href="#" data-target="#editPriInfo" data-toggle="modal" class="float-right">Edit primary info</a>
+                    <td class="font-weight-bold">Email:</td>
+                    <td>{{ INFO.email }}</td>
                 </tr>
             </table>
         </div>
@@ -45,75 +65,71 @@
 </div>
 
 <!-- Modal Edit basic info -->
-<div class="modal fade" id="editbasicInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editbasicInfo" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form action="/account/settings" method="POST"  class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Information: </h5>
+                <h5 class="modal-title text-white">Edit Information: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="firstname">First name:</label>
-                            <input type="text" class="form-control" name="edit_fn" value="Jimmy">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="lastname">Last Name:</label>
-                            <input type="text" class="form-control" name="edit_ln" value="Monserate">
-                        </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>First name:</label>
+                        <input type="text" class="form-control" name="fn" value="{{ INFO.fn }}">
                     </div>
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="email" class="form-control" name="edit_usn" value="calauag@nagacity.com">
+                    <div class="form-group col-md-6">
+                        <label>Last Name:</label>
+                        <input type="text" class="form-control" name="ln" value="{{ INFO.ln }}">
                     </div>
-                </form>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number:</label>
+                    <input type="text" class="form-control" name="cn" value="{{ INFO.cn }}">
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                    <input type="text" class="form-control" name="ad" value="{{ INFO.ad }}">
+                </div>
+                <div class="form-group">
+                    <label>Birth date:</label>
+                    <input type="date" class="form-control" name="bdate" value="{{ INFO.bdate }}">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
 <!-- Modal Edit Primary info -->
-<div class="modal fade" id="editPriInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPriInfo" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form action="/account/settings" method="POST" class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Information: </h5>
+                <h5 class="modal-title text-white">Edit Information: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="inputAddress">Address:</label>
-                        <input type="text" class="form-control" name="edit_add" value="calauag naga city">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress2">Email:</label>
-                        <input type="email" class="form-control" name="edit_email" value="calauag@nagacity.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress2">Contact Number:</label>
-                        <input type="email" class="form-control" name="edit_cn" value="0983713891">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress2">Birthday:</label>
-                        <input type="date" class="form-control" name="edit_bd" value="07.21.1998">
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" class="form-control" name="username" value="{{ INFO.username }}">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" class="form-control" name="email" value="{{ INFO.email }}">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>

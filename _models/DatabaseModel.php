@@ -1,35 +1,70 @@
 <?php
 class DatabaseModel {
     // Database instances
-    private static $DB = null;
-    private static $DBCon = null;
+    private static $DB;
+    private static $mainDBConnection;
+    private static $lendingDBConnection;
+
     /**
      * Connect to the Database
      */
-    public static function db(){
+    public static function initConnections(){
         // Use the "cached" DB to minimize multiple initialization
         if (self::$DB != null){
             return self::$DB;
         }
 
         // Get authentication credentials from the configuration file
-        $AC = Route::config("kim_db");
+        $activeCredentials = Route::config(Route::config("activeDB"));
 
-        // Connect to the Database Server
-        $DB = new Plugins\MySQLiPDO();
-        $DBCon = $DB->mysqli_connect($AC["host"], $AC["dbname"], $AC["username"], $AC["password"]);
+        // Initialize MYSQL PDO plugin
+	    $DB = new Plugins\MySQLiPDO();
+
+	    // Connect to the Main Database Server
+	    $DBCon1 = $DB->mysqli_connect(
+        	$activeCredentials["host"],
+	        $activeCredentials["dbname"],
+	        $activeCredentials["username"],
+	        $activeCredentials["password"]
+        );
+
+        // Connect to the Lending Database Server
+        $DBCon2 = $DB->mysqli_connect(
+        	$activeCredentials["host"],
+	        $activeCredentials["lendingDB"],
+	        $activeCredentials["username"],
+	        $activeCredentials["password"]
+        );
+
+        // When Failed to initialize the Plugin
         if (!$DB){
-            // TODO: Log this error
             echo "An unknown error occurs. Please try again later or contact the administrator. <a href='/'>Go back to homepage</a>";
             exit;
         }
+
         // Save DB Instances as methods
         self::$DB = $DB;
-        self::$DBCon = $DBCon;
+        self::$mainDBConnection = $DBCon1;
+        self::$lendingDBConnection = $DBCon2;
+
+        // Return the Database Connection
         return $DB;
     }
 
-    public static function getConnection(){
-        return self::$DBCon;
+	/**
+	 * Get the cached main Database connection
+	 * @return mixed
+	 */
+    public static function getMainConnection(){
+        return self::$mainDBConnection;
+    }
+
+
+	/**
+	 * Get the cached lending Database connection
+	 * @return mixed
+	 */
+	public static function getLendingConnection(){
+		return self::$lendingDBConnection;
     }
 }
